@@ -1,0 +1,10 @@
+npm-debug.log
+.merlin
+yarn-error.log
+node_modules/
+_build
+_release
+unused-module-finder.install
+.DS_Store
+*.install
+_esy

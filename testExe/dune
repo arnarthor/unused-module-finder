@@ -1,0 +1,3 @@
+(executable (name RunUnusedModuleFinderTests)
+    (public_name RunUnusedModuleFinderTests.exe)
+    (libraries unused-module-finder.test)) 

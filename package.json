@@ -1,0 +1,48 @@
+{
+  "name": "unused-module-finder",
+  "version": "0.0.0",
+  "description": "My Project",
+  "esy": {
+    "build": "dune build -p #{self.name}",
+    "release": {
+      "releasedBinaries": ["UnusedModuleFinderApp.exe"]
+    }
+  },
+  "buildDirs": {
+    "test": {
+      "require": ["unused-module-finder/library", "rely.lib"],
+      "flags": ["-linkall", "-g"]
+    },
+    "testExe": {
+      "require": ["unused-module-finder/test"],
+      "bin": {
+        "RunUnusedModuleFinderTests.exe": "RunUnusedModuleFinderTests.re"
+      }
+    },
+    "library": {},
+    "executable": {
+      "require": ["unused-module-finder/library"],
+      "ocamloptFlags": ["-linkall", "unix.cmxa", "str.cmxa"],
+      "bin": {
+        "UnusedModuleFinderApp.exe": "UnusedModuleFinderApp.re"
+      }
+    }
+  },
+  "scripts": {
+    "test": "esy x RunUnusedModuleFinderTests.exe"
+  },
+  "dependencies": {
+    "@opam/dune": "*",
+    "@esy-ocaml/reason": "*",
+    "refmterr": "*",
+    "ocaml": "4.7.x",
+    "pesy": "*",
+    "@reason-native/rely": "*"
+  },
+  "devDependencies": {
+    "@opam/merlin": "*"
+  },
+  "resolutions": {
+    "pesy": "esy/pesy#3d8a18385e07fa11daabe811814fae3f869ad355"
+  }
+}

@@ -1,0 +1,2 @@
+(library (name Test) (public_name unused-module-finder.test)
+    (libraries unused-module-finder.library rely.lib) (flags -linkall -g)) 

@@ -1,0 +1,4 @@
+(executable (name UnusedModuleFinderApp)
+    (public_name UnusedModuleFinderApp.exe)
+    (libraries unused-module-finder.library)
+    (ocamlopt_flags -linkall unix.cmxa str.cmxa)) 
