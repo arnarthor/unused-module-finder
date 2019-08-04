@@ -1,11 +1,14 @@
-let walk_directory_tree dir pattern =
-  let re = Str.regexp pattern in
+let walk_directory_tree dir =
+  let re = Str.regexp ".*\\.re$" in
+  let ml = Str.regexp ".*\\.ml$" in
   let node_modules = Str.regexp ".*/node_modules/.*" in
   let esy = Str.regexp ".*/_esy/.*" in
+  let test_files = Str.regexp ".*_test.re$" in
   let select str =
     (not (Str.string_match node_modules str 0))
     && (not (Str.string_match esy str 0))
-    && Str.string_match re str 0
+    && (not (Str.string_match test_files str 0))
+    && (Str.string_match re str 0 || Str.string_match ml str 0)
   in
   let rec walk acc = function
     | [] ->
@@ -42,10 +45,16 @@ let exec_command cmd =
   Buffer.contents buf
 
 let extract src_root =
-  walk_directory_tree src_root ".*\\.re$"
+  walk_directory_tree src_root
   |> List.rev_map (fun filename -> (Filename.basename filename, filename))
   |> List.iter (fun (filename, file) ->
-         let module_name = Filename.chop_suffix filename ".re" in
-         print_endline (String.concat " " ["git"; "grep"; module_name]))
+         let filename_length = String.length filename - 3 in
+         let module_name = String.sub filename 0 filename_length in
+         let git_grep =
+           exec_command
+             (String.concat " "
+                ["cd"; src_root; "&&"; "git"; "grep"; module_name])
+         in
+         if String.length git_grep == 0 then print_endline file else ())
 
 let run src_folder = extract src_folder
